@@ -1,0 +1,1416 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8">
+    <meta name="generator" content="pandoc">
+          <meta name="author" content="Till Grallert">
+          <meta name="author" content="Sophie Eckenstaler">
+              <meta name="dcterms.date" content="2022-09-20">
+                <title>Lasst uns die Blackbox öffnen!</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+    <link rel="stylesheet" href="https://unpkg.com/reveal.js@^4//dist/reset.css">
+    <link rel="stylesheet" href="https://unpkg.com/reveal.js@^4//dist/reveal.css">
+    <style>
+      .reveal .sourceCode {  /* see #7635 */
+        overflow: visible;
+      }
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+      div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+      ul.task-list{list-style: none;}
+      .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    </style>
+        <link rel="stylesheet" href="https://unpkg.com/reveal.js@^4//dist/theme/none.css" id="theme">
+                    <style type="text/css">
+                    /* slidy.css
+
+                       Copyright (c) 2005-2010 W3C (MIT, ERCIM, Keio), All Rights Reserved.
+                       W3C liability, trademark, document use and software licensing
+                       rules apply, see:
+
+                       http://www.w3.org/Consortium/Legal/copyright-documents
+                       http://www.w3.org/Consortium/Legal/copyright-software
+                    */
+
+                    /* render Arabic as rtl */
+                    [lang = "ar"],
+                    [lang = "ota"],
+                    [lang = "fa"],
+                    [lang = "he"],
+                    [lang *= "-Arab-AR"] {
+                        direction: rtl;
+                        text-align: right !important;
+                        font-family: AmiriWeb, Helvetica, Arial, sans-serif;
+                        /*keep in mind that relative sizes (%, em) 
+                        accumulate for nested elements and must thus be avoided. 
+                        At the moment almost everything is tailored to 18px */
+                        /*    font-size: 18px;*/
+                    }
+                    /* display latin scripts in a smaller font */
+                    [lang = "en"],
+                    [lang = "fr"],
+                    [lang = "de"],
+                    [lang = "it"],
+                    [lang *= "ar-Latn-"],
+                    [lang *= "ota-Latn-"] {
+                        direction: ltr;
+                        text-align: left !important;
+                        /*    font-size: 14px;*/
+                    }
+                    /* counter default settings in reveal.css */
+                    .reveal .slides {
+                        text-align: left;
+                    }
+
+                    html,
+                    body,
+                    .reveal-viewport {
+                        margin: 0 0 0 0;
+                        padding: 0 0 0 0;
+                        width: 100%;
+                        height: 100%;
+                        /*color: white;*/
+                        color: black !important;
+                        /*color: #4d4d4d;*/
+                        /*background-color: black;*/
+                        background-color: white !important;
+                        overflow: hidden;
+                        /*font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif; 
+                      font-size: 12px;*/
+                      line-height: 1.2; 
+                      word-wrap: break-word;
+                    }
+                    body,
+                    .reveal-viewport {
+                        position: static;
+                    }
+                    /******************
+                      header and footer to be displayed on all slides
+                    *******************/
+
+                    header, 
+                    footer, 
+                    div.c_header,
+                    div.c_footer  {
+                      z-index: 30;
+                      display: block;
+                      position: fixed;
+                      height: 3.8em;
+                      width: 100%;
+                    }
+                    footer.reveal {
+                        height: 3em;
+                    }
+                    header,
+                    div.c_header {
+                        top: 0;
+                    }
+                    footer {
+                        bottom: 0;
+                        background-color: #8a0f14;
+                        color: white;
+                    }
+
+                    footer {
+                        font-size: 0.7em;
+                    }
+
+                    footer span {
+                        text-transform:  capitalize; /*this doesn't seem to have an effect*/
+                        display: inline-block;
+                        padding-left: 0.5em;
+                        padding-right: 0.5em;
+                    }
+                    div.c_footer {
+                        top: auto;
+                        bottom: 1.2em;
+                        height: 1.2em;
+                        font-size: 60%;
+                    }
+                    div.c_frame {
+                    /*padding: 1em;*/
+                    margin-top: 1em;
+                    margin-left: 3em;
+                    margin-right: 3em;
+                    }
+
+                    /* basic styling for all slides */
+                    div.slide,
+                    section.slide {
+                        z-index: 20;
+                        display: block;
+                        margin-top: 0;
+                        margin-bottom: 0;
+                        margin-right: auto;
+                        margin-left: auto;
+                        padding-top: 0;
+                        padding-bottom: 0;
+                        padding-left: 20px;
+                        padding-right: 20px;
+                        border-width: 0;
+                        clear: both;
+                        left: 0;
+                        right: 0;
+                        /*line-height: 120%;*/
+                        background-color: transparent;
+                        /* width should be in em dashes*/
+                        max-width: 50em;
+                    }
+                    div.slide {
+                        top: 10% ;
+                    }
+                    /* revealjs generates inline CSS that needs to be overridden  */
+                    section.slide {
+                        top: 0 !important;
+                    }
+                    /* while on screen slides should be black on white, it should be the opposite on projectors */
+                    @media projector {
+                        body {
+                            background-color: black;
+                            color: white;
+                        }
+                        pre {
+                            background-color: white;
+                            color: black;
+                        }
+                    }
+                    /******************
+                    set fonts and sizes
+                    *******************/
+                    body,
+                    .reveal-viewport {
+                        font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif;
+                    /*font-family: "American Typewriter";*/
+                    /*font-family: "Gentium Plus";*/
+                    }
+                    body {
+                        font-weight: 300 !important;
+                        /*font-size is over-ridden by automatically generated inline CSS on body*/
+                        font-size: 24px !important;
+                    }
+                    .reveal h1,
+                    .reveal h2,
+                    .reveal h3,
+                    .reveal h4,
+                    .reveal h5,
+                    h1,
+                    h2,
+                    h3,
+                    h4,
+                    h5 {
+                        font-family: "American Typewriter", "Lucida Sans Typewriter", "Lucida Console", monaco, "Bitstream Vera Sans Mono", monospace;
+                        font-weight: 400;
+                        color: #113868;
+                    }
+                    p,
+                    ol,
+                    ul,
+                    span {
+                    }
+                    /**
+                    highlights: <em> is for transcribed terms, <strong> for emphasis;
+                    **/
+                    em {
+                        /*font-family: "Gentium Plus";
+                      /*font-family: Georgia;*/
+                      font-style: italic;
+                      font-weight: 200;
+                    }
+                    strong {
+                        font-style: italic;
+                        font-weight: 200;
+                        border-bottom: 2px dotted #F96827;
+                    }
+                    table {
+                        font-size: 0.8em;
+                    }
+                    /******************
+                    set colours
+                    *******************/
+
+                    /***************
+                    standard classes, navigation
+                    ***************/
+                    div.toolbar {
+                        position: fixed;
+                        z-index: 40;
+                        top: auto;
+                        bottom: 0;
+                        left: 0;
+                        right: 0;
+                        height: 1.2em;
+                        text-align: right;
+                        padding-left: 1em;
+                        padding-right: 1em;
+                        font-size: 60%;
+                        color: red;
+                        background-color: rgb(240, 240, 240);
+                        border-top: solid 1px rgb(180, 180, 180);
+                    }
+                    div.toolbar span.copyright {
+                        /*display: inline-block;
+                      text-align: center;*/
+                      color: black;
+                      margin-left: 0.5em;
+                    }
+                    /* revealjs navigation */
+                    aside.controls {
+                        bottom: 7em !important;
+                    }
+                    aside.controls * {
+                        z-index: 40;
+                    }
+                    div.initial_prompt {
+                        position: absolute;
+                        z-index: 1000;
+                        bottom: 1.2em;
+                        width: 100%;
+                        background-color: rgb(200, 200, 200);
+                        opacity: 0.35;
+                        background-color: rgba(200, 200, 200, 0.35);
+                        cursor: pointer;
+                    }
+                    div.initial_prompt p.help {
+                        text-align: center;
+                    }
+                    div.initial_prompt p.close {
+                        text-align: right;
+                        font-style: italic;
+                    }
+                    div.slidy_toc {
+                        position: absolute;
+                        z-index: 300;
+                        width: 60%;
+                        max-width: 30em;
+                        height: 30em;
+                        overflow: auto;
+                        top: auto;
+                        right: auto;
+                        left: 4em;
+                        bottom: 4em;
+                        padding: 1em;
+                        background: rgb(240, 240, 240);
+                        border-style: solid;
+                        border-width: 2px;
+                        font-size: 60%;
+                    }
+                    div.slidy_toc .toc-heading {
+                        text-align: center;
+                        width: 100%;
+                        margin: 0;
+                        margin-bottom: 1em;
+                        border-bottom-style: solid;
+                        border-bottom-color: rgb(180, 180, 180);
+                        border-bottom-width: 1px;
+                    }
+                    /* basic styling for all slides */
+                    div.background {
+                        display: none;
+                    }
+                    div.handout {
+                        margin-left: 20px;
+                        margin-right: 20px;
+                    }
+                    div.slide.titlepage {
+                        text-align: center;
+                    }
+                    div.slide.titlepage h1 {
+                        padding-top: 10%;
+                        margin-right: 0;
+                    }
+                    /* h1 needs to override the standard CSS */
+                    div.slide h1 {
+                        padding-left: 0;
+                        padding-right: 0;
+                        padding-top: 4pt;
+                        padding-bottom: 4pt;
+                        margin-top: 0;
+                        margin-left: 0;
+                        margin-right: 0;
+                        margin-bottom: 0.5em;
+                        display: block;
+                        /*font-size: 160%;*/
+                        line-height: 1.2em;
+                        background: transparent;
+                    }
+                    /*****************
+                    heads
+                    ******************/
+                    /* title and dividing slides */
+                    /* put h1 in the center of the slide */
+                    div.titleslide h1 {
+                        margin-top: 4em;
+                    /*margin-bottom: auto;*/
+                    font-size: 2em;
+                    }
+                    div.level1 h1 {
+                        margin-top: 4em;
+                        font-size: 2em;
+                    }
+                    h1,
+                    h2,
+                    h3,
+                    h4 {
+                        text-align: center;
+                    }
+                    .reveal h1, h1 {
+                        padding-bottom: 0.3em;
+                        font-size: 1.75em;
+                        line-height: 1.2;
+                        border-bottom: 1px solid #eee;
+                    }
+                    .reveal h2, h2 {
+                        padding-bottom: 0.3em;
+                        font-size: 1.5em;
+                        line-height: 1.225;
+                        border-bottom: 1px solid #eee;
+                    }
+                    .reveal h3, h3 {
+                        font-size: 1.25em;
+                        line-height: 1.43;
+                    }
+                    .reveal h4, h4 {
+                        font-size: 1em;
+                    }
+                    /******************
+                    levels of slides
+                    ******************/
+                    .title-slide,
+                    .level1 {
+                        padding-top: 100px;
+                        padding-bottom: 100px;
+                    }
+                    /******************
+                    links
+                    ******************/
+                    a {
+                        text-decoration: none
+                    }
+                    a img {
+                        border-width: 0;
+                        border-style: none
+                    }
+                    /*a:visited { color: navy }
+                    a:link { color: navy }
+                    a:hover { color: red; text-decoration: underline }
+                    a:active { color: red; text-decoration: underline }*/
+                    a,
+                    a:link {
+                        color: #F46A00 /*!important*/;
+                        /*text-decoration: none; */
+                    }
+                    a:visited {
+                        color: #a84900;
+                        /*text-decoration: none; */
+                    }
+                    a:hover,
+                    a:active {
+                        color: #8DB300;
+                        /*text-decoration: none; */
+                    }
+                    .toolbar a:link {
+                        color: blue
+                    }
+                    .toolbar a:visited {
+                        color: blue
+                    }
+                    .toolbar a:active {
+                        color: red
+                    }
+                    .toolbar a:hover {
+                        color: red
+                    }
+                    @media screen and (max-device-width : 1024px) {
+                        div.slide {
+                            font-size: 100%;
+                        }
+                    }
+                    @media screen and (max-device-width : 800px) {
+                        div.slide {
+                            font-size: 200%;
+                        }
+                        div.slidy_toc {
+                            top: 1em;
+                            left: 1em;
+                            right: auto;
+                            width: 80%;
+                            font-size: 180%;
+                        }
+                    }
+                    div.toc-heading {
+                        width: 100%;
+                        display: inline-block;
+                        height: auto;
+                        border-bottom: solid 1px rgb(180, 180, 180);
+                        margin-bottom: 1em;
+                        text-align: center;
+                    }
+                    /****************
+                    title slide
+                    *****************/
+
+                    /*span.author ~ span.author::before {
+                      content: ', ';
+                    }*/
+
+                    /****************
+                    images and figures
+                    *****************/
+                    div.slide img {
+                        /* image-rendering: optimize-quality; */
+                        background-color: white; /*rgba(0,0,0,0.04);*/
+                        border-radius: 5px;
+                        display: block;
+                        max-height: 600px;
+                        max-width: 95%;
+                        /* center images */
+                        margin-left: auto;
+                        margin-right: auto;
+                        /*box-shadow: 2px 2px 5px #000;*/
+                        /*border: gray solid 1px;*/
+                    }
+                    div.figure {
+                        width: 100%;
+                        padding: 0;
+                        /*height: inherit;*/
+                    }
+                    div.figure p.caption,
+                    figcaption {
+                        position: relative;
+                        float: right;
+                        text-align: right;
+                        margin-top: 0.2em;
+                        margin-bottom: 0.5em;
+                        /*top:2em;*/
+                        /*max-width:15%;
+                        min-width: 180px;*/
+                        font-size: 0.6em;
+                        font-weight: lighter;
+                    }
+                    div.figure img {
+                        float: right;
+                        /*max-height: 80%;*/
+                        /*max-height: 600px;*/
+                        /*max-height: inherit;*/
+                        /*max-width:80%;*/
+                        /*max-width: 95%;*/
+                    }
+                    header img,
+                    footer img {
+                        display: block;
+                    }
+                    /* inline images */
+                    /*p img,
+                    li img {
+                        display: inline-block;
+                        height: 1em;
+                    }*/
+                    img.c_logo {
+                        margin-left: 3em;
+                        margin-right: 3em;
+                        margin-top: 1em;
+                        margin-bottom: 1em;
+                        max-width: 6em;
+                        max-height: 4em;
+                    }
+                    /*img {
+                      max-height: 700px;
+                      max-width: 100%;
+                    }*/
+                    /* external content, including local html pages */
+                    iframe {
+                        display: block;
+                        width: 90%;
+                        /* the height setting seems to squeeze iframes */
+                        /*height: 80%;*/
+                        /* center the iframe */
+                        margin-left: auto;
+                        margin-right: auto;
+                        scrolling: auto;
+                        scroll-behavior: auto;
+                        /*border:none;*/
+                    }
+                    /*.size-80 {
+                      display: block;
+                      width: 80%;
+                      height: 80%;
+                    }*/
+                    /*****************
+                    columns
+                    ******************/
+                    .columns-3 > .column {
+                        width: 32%;
+                    }
+                    .columns-2 > .column {
+                        width: 50%;
+                    }
+                    .c_width-60,
+                    .column-60,
+                    .columns .wide {
+                        width: 64%;
+                        position: relative;
+                        float: left;
+                    }
+                    .c_width-50 {
+                        width: 50%;
+                        position: relative;
+                        float: left;
+                    }
+                    .c_width-30,
+                    .column-30,
+                    .columns .narrow {
+                        width: 33%;
+                        position: relative;
+                        float: left;
+                    }
+                    .c_left {
+                        display: block;
+                        float: left;
+                    }
+                    .c_right {
+                        display: block;
+                        float: right;
+                    }
+
+                    /*****************
+                    blackbox
+                    ******************/
+
+                    .blackbox  * {
+                        font-size: inherit;
+                        font-family: inherit;
+                    }
+                    .blackbox > div,
+                    .blackbox > section {
+                        width: 32%;
+                        position: relative;
+                        /*float: left;*/
+                        min-height: 5em;
+                        padding-left: 1em;
+                        padding-right: 1em;
+                    }
+                    .blackbox > .input,
+                    .blackbox > .output {
+                        width: 25%;
+                        background-color: rgba(245, 245, 245, 1);
+                    }
+                    .blackbox > .input {
+                        float: left;
+                    }
+                    .blackbox > .output {
+                        float: right;
+                    }
+                    .blackbox textarea {
+                        min-height: inherit;
+                        background-color: inherit;
+                    }
+                    .blackbox > .computing,
+                    .blackbox > .content {
+                        min-height: 5em;
+                        /*padding: 1em;*/
+                        margin: 0 auto;
+                        border-style: solid;
+                        border-width: 1px;
+                        border-color: black;
+                    }
+                    .blackbox > .computing {
+                        background-color: black;
+                        color: white;
+                    }
+                    .blackbox > .content {
+
+                    }
+
+                    button {
+                        display: block;
+                        cursor: pointer;
+                    }
+                    .blackbox button {
+                        min-width: 150px;
+                        height: 50px;
+                        margin-left: auto;
+                        margin-right: auto;
+                        top: 1em;
+                    }
+                    .button-36 {
+                        background-image: linear-gradient(92.88deg, #455EB5 9.16%, #5643CC 43.89%, #673FD7 64.72%);
+                        border-radius: 8px;
+                        border-style: none;
+                        box-sizing: border-box;
+                        color: #FFFFFF;
+                        cursor: pointer;
+                        flex-shrink: 0;
+                        font-family: "Inter UI","SF Pro Display",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,"Open Sans","Helvetica Neue",sans-serif;
+                        font-size: 16px;
+                        font-weight: 500;
+                        height: 4rem;
+                        padding: 0 1.6rem;
+                        text-align: center;
+                        text-shadow: rgba(0, 0, 0, 0.25) 0 3px 8px;
+                        transition: all .5s;
+                        user-select: none;
+                        -webkit-user-select: none;
+                        touch-action: manipulation;
+                    }
+
+                    .button-36:hover {
+                        box-shadow: rgba(80, 63, 205, 0.5) 0 1px 30px;
+                        transition-duration: .1s;
+                    }
+                    .button-49,
+                    .button-49:after {
+                      line-height: 50px;
+                      font-size: 20px;
+                      font-family: 'Bebas Neue', sans-serif;
+                      background: linear-gradient(45deg, transparent 5%, #FF013C 5%);
+                      border: 0;
+                      color: #fff;
+                      letter-spacing: 3px;
+                      box-shadow: 6px 0px 0px #00E6F6;
+                      outline: transparent;
+                      position: relative;
+                      user-select: none;
+                      -webkit-user-select: none;
+                      touch-action: manipulation;
+                    }
+
+                    .button-49:after {
+                      --slice-0: inset(50% 50% 50% 50%);
+                      --slice-1: inset(80% -6px 0 0);
+                      --slice-2: inset(50% -6px 30% 0);
+                      --slice-3: inset(10% -6px 85% 0);
+                      --slice-4: inset(40% -6px 43% 0);
+                      --slice-5: inset(80% -6px 5% 0);
+
+                      content: 'ALTERNATE TEXT';
+                      display: block;
+                      position: absolute;
+                      top: 0;
+                      left: 0;
+                      right: 0;
+                      bottom: 0;
+                      background: linear-gradient(45deg, transparent 3%, #00E6F6 3%, #00E6F6 5%, #FF013C 5%);
+                      text-shadow: -3px -3px 0px #F8F005, 3px 3px 0px #00E6F6;
+                      clip-path: var(--slice-0);
+                    }
+
+                    .button-49:hover:after {
+                      animation: 1s glitch;
+                      animation-timing-function: steps(2, end);
+                    }
+
+                    @keyframes glitch {
+                      0% {
+                        clip-path: var(--slice-1);
+                        transform: translate(-20px, -10px);
+                      }
+                      10% {
+                        clip-path: var(--slice-3);
+                        transform: translate(10px, 10px);
+                      }
+                      20% {
+                        clip-path: var(--slice-1);
+                        transform: translate(-10px, 10px);
+                      }
+                      30% {
+                        clip-path: var(--slice-3);
+                        transform: translate(0px, 5px);
+                      }
+                      40% {
+                        clip-path: var(--slice-2);
+                        transform: translate(-5px, 0px);
+                      }
+                      50% {
+                        clip-path: var(--slice-3);
+                        transform: translate(5px, 0px);
+                      }
+                      60% {
+                        clip-path: var(--slice-4);
+                        transform: translate(5px, 10px);
+                      }
+                      70% {
+                        clip-path: var(--slice-2);
+                        transform: translate(-10px, 10px);
+                      }
+                      80% {
+                        clip-path: var(--slice-5);
+                        transform: translate(20px, -10px);
+                      }
+                      90% {
+                        clip-path: var(--slice-1);
+                        transform: translate(-10px, 0px);
+                      }
+                      100% {
+                        clip-path: var(--slice-1);
+                        transform: translate(0);
+                      }
+                    }
+
+                    /*****************
+                    writing direction
+                    ******************/
+                    .c_rtl {
+                        display: inline-block;
+                        direction: rtl;
+                        text-align: right;
+                        font-family: AmiriWeb;
+                    }
+                    .c_ltr {
+                        direction: ltr;
+                        text-align: left;
+                    }
+                    /*****************
+                    code
+                    ******************/
+                    div.sourceCode {
+                        margin: 10px 5px;
+                    }
+                    /*font*/
+                    pre,
+                    code {
+                        font-size: 0.8em;
+                        line-height: 0.9;
+                    }
+                    pre {
+                        display: block;
+                        font-family: monospace;
+                        white-space: pre-wrap;
+                        padding-left: 5px;
+                        padding-right: 5px;
+                        margin: 0;
+                        background-color: rgba(0, 0, 0, 0.04);
+                        border-radius: 5px;
+                        /*box-shadow: 2px 2px 5px #000;*/
+                        border: #95ABD0 solid 1px;
+                    }
+                    pre > code.sourceCode {
+                        white-space: pre-wrap; /* pre causes long lines with horizontal scrolling, which we don't want on slides*/
+                    }
+                    h1 > code {
+                        background: transparent;
+                        border: 0;
+                        font-size: inherit;
+                    }
+                    /* code also governs inline code, the code-highlighted code blocks are wrapped in pre*/
+                    code {
+                        white-space: pre-wrap;
+                        /* color: #00428C; */
+                        color: #9C20EE;
+                        /*font-size:0.9em;*/
+                    }
+                    pre code {
+                        color: #000000;
+                    }
+                    li pre {
+                        margin-left: 0;
+                    }
+                    blockquote {
+                        padding-left: 1em;
+                        padding-left: 1em;
+                        margin-bottom: 1em;
+                        text-align: right;
+                        /*font-style: italic;*/
+                        clear: both;
+                        margin-block-start: 0em;
+                        margin-block-end: 0em;
+                        margin-inline-start: 0px;
+                        margin-inline-end: 0px;
+                    }
+                    blockquote > p:before {
+                        content: "> "
+                    }
+                    cite {
+                        display: block;
+                        margin-left: 10%;
+                        font-size: 0.8em;
+                        font-style: normal;
+                        text-align: right;
+                        float: right;
+                        padding-bottom: 1em;
+                    }
+                    p.copyright {
+                        font-size: smaller
+                    }
+                    .center {
+                        text-align: center
+                    }
+                    .footnote {
+                        font-size: smaller;
+                        margin-left: 2em;
+                    }
+                    /**********
+                    lists
+                    ***********/
+                    ul,
+                    ol {
+                        display: block;
+                        font-style: normal;
+                        margin-top: 0.1em;
+                        margin-bottom: 0.5em;
+                        /*margin-left: 1.5em;*/
+                        list-style-position: inside;
+                        padding-left: 1em;
+                        /* all lists should be centered */
+                        /*text-align: left;*/
+                        /*margin-left: auto;
+                      margin-right: auto;*/
+                    }
+                    /* padding, line-height etc. for all list items */
+                    ul li,
+                    ol li {
+                        margin-top: 0.2em;
+                        margin-bottom: 0.2em;
+                        padding: 0 0 0 0px;
+                        line-height: 120%;
+                        font-size: inherit;
+                        font-style: normal;
+                    }
+                    li li {
+                        font-size: inherit;
+                        font-style: normal;
+                    }
+                    li li li {
+                        font-size: inherit;
+                        font-style: normal;
+                    }
+                    /* unordered lists */
+                    ul {
+                        list-style-type: circle;
+                    }
+                    ul ul {
+                        list-style-type: circle;
+                    }
+                    ul ul ul {
+                        list-style-type: circle;
+                    }
+                    ul ul ul ul {
+                        list-style-type: circle;
+                    }
+                    ul li {
+                        list-style: circle;
+                        /*margin: 0.1em 0em 0.6em 0;
+                      padding: 0 0 0 0;
+                      line-height: 140%;*/
+                    }
+                    li ul li {
+                    /*font-size: 85%; */
+                    font-style: normal;
+                    list-style-type: circle;
+                        /* background: transparent;
+                      padding: 0 0 0 0;*/
+                    }
+                    li li ul li {
+                    /*font-size: 85%; */
+                    font-style: normal;
+                    list-style-type: circle;
+                        /*background: transparent;
+                      padding: 0 0 0 0;*/
+                    }
+                    li li li ul li {
+                        font-style: normal;
+                        list-style-type: circle;
+                        /*background: transparent;
+                      padding: 0 0 0 0;*/
+                    }
+                    /*ul {
+                      margin: 0.5em 1.5em 0.5em 1.5em;
+                      padding: 0;
+                    }*/
+                    /* ordered lists */
+                    ol {
+                        margin: 0.5em 1.5em 0.5em 1.5em;
+                        padding: 0;
+                    }
+                    ol li {
+                        list-style-type: decimal;
+                    }
+                    li ol li {
+                        list-style-type: decimal;
+                    }
+                    li li ol li {
+                        list-style-type: decimal;
+                    }
+
+                    /***********
+                    indentation of nested lists
+                    ***********/
+
+                    ul ul,
+                    ul ol,
+                    ol ol,
+                    ol ul {
+                        padding-inline-start: 2em;
+                    }
+
+                    /*this is to accomodated the snipped highlight js*/
+                    pre ul li {
+                        margin-top: 0;
+                        font-size: 0.7em;
+                        padding: 0;
+                    }
+                    div dt {
+                        margin-left: 0;
+                        margin-top: 1em;
+                        margin-bottom: 0.5em;
+                        font-weight: bold;
+                    }
+                    div dd {
+                        margin-left: 2em;
+                        margin-bottom: 0.5em;
+                    }
+                    p,
+                    pre,
+                    /*ul,*/
+                    /*ol,*/
+                    blockquote,
+                    h2,
+                    h3,
+                    h4,
+                    h5,
+                    h6,
+                    dl,
+                    table {
+                        margin-left: 0.5em;
+                        margin-right: 0.5em;
+                        margin-top: 0.5em;
+                        margin-bottom: 0.5em;
+                    }
+                    p.subhead {
+                        font-weight: bold;
+                        margin-top: 2em;
+                    }
+                    .smaller {
+                        font-size: smaller
+                    }
+                    .bigger {
+                        font-size: 130%
+                    }
+                    /*******************************
+                    tables
+                    *******************************/
+                    table {
+                        display: table;
+                        /* the table should be centred on the page*/
+                        margin-left: auto;
+                        margin-right: auto;
+                        /*font-size: 0.8em;*/
+                    }
+                    tr:hover td {
+                        /*background-color: red; */
+                        border-top-color: #F46A00;
+                        border-bottom-color: #F46A00;
+                        border-bottom-width: 1px;
+                        border-top-width: 1px;
+                        border-bottom-style: solid;
+                        border-top-style: solid;
+                    }
+                    td,
+                    th {
+                        padding: 0.2em
+                    }
+                    /*
+                    highlight mouse-over on tables
+                    */
+                    .focus {
+                        border-color: red;
+                        border-width: 2px;
+                        border-style: solid;
+                    }
+                    /*
+                     setting class="outline on ol or ul makes it behave as an
+                     ouline list where blocklevel content in li elements is
+                     hidden by default and can be expanded or collapsed with
+                     mouse click. Set class="expand" on li to override default
+                    */
+                    ol.outline li:hover {
+                        cursor: pointer
+                    }
+                    ol.outline li.nofold:hover {
+                        cursor: default
+                    }
+                    ul.outline li:hover {
+                        cursor: pointer
+                    }
+                    ul.outline li.nofold:hover {
+                        cursor: default
+                    }
+                    ol.outline {
+                        list-style: decimal;
+                    }
+                    ol.outline ol {
+                        list-style-type: lower-alpha
+                    }
+                    ol.outline li.nofold {
+                        padding: 0 0 0 20px;
+                        background: transparent url(../graphics/nofold-dim.gif) no-repeat 0px 0.5em;
+                    }
+                    ol.outline li.unfolded {
+                        padding: 0 0 0 20px;
+                        background: transparent url(../graphics/fold-dim.gif) no-repeat 0px 0.5em;
+                    }
+                    ol.outline li.folded {
+                        padding: 0 0 0 20px;
+                        background: transparent url(../graphics/unfold-dim.gif) no-repeat 0px 0.5em;
+                    }
+                    ol.outline li.unfolded:hover {
+                        padding: 0 0 0 20px;
+                        background: transparent url(../graphics/fold.gif) no-repeat 0px 0.5em;
+                    }
+                    ol.outline li.folded:hover {
+                        padding: 0 0 0 20px;
+                        background: transparent url(../graphics/unfold.gif) no-repeat 0px 0.5em;
+                    }
+                    ul.outline li.nofold {
+                        padding: 0 0 0 20px;
+                        background: transparent url(../graphics/nofold-dim.gif) no-repeat 0px 0.5em;
+                    }
+                    ul.outline li.unfolded {
+                        padding: 0 0 0 20px;
+                        background: transparent url(../graphics/fold-dim.gif) no-repeat 0px 0.5em;
+                    }
+                    ul.outline li.folded {
+                        padding: 0 0 0 20px;
+                        background: transparent url(../graphics/unfold-dim.gif) no-repeat 0px 0.5em;
+                    }
+                    ul.outline li.unfolded:hover {
+                        padding: 0 0 0 20px;
+                        background: transparent url(../graphics/fold.gif) no-repeat 0px 0.5em;
+                    }
+                    ul.outline li.folded:hover {
+                        padding: 0 0 0 20px;
+                        background: transparent url(../graphics/unfold.gif) no-repeat 0px 0.5em;
+                    }
+                    /* for slides with class "title" in table of contents */
+                    a.titleslide {
+                        font-weight: bold;
+                        font-style: italic
+                    }
+                    /* references, footnotes, bibliography */
+                    div.references {
+                        font-size: 80%
+                    }
+                    div.references p {
+                        margin: 5px 0px;
+                    }
+                    /*
+                     hide images for work around for save as bug
+                     where browsers fail to save images used by CSS
+                    */
+                    img.hidden {
+                        display: none;
+                        visibility: hidden
+                    }
+                    div.initial_prompt {
+                        display: none;
+                        visibility: hidden
+                    }
+                    div.slide {
+                        visibility: visible;
+                        position: inherit;
+                    }
+                    div.handout {
+                        border-top-style: solid;
+                        border-top-width: thin;
+                        border-top-color: black;
+                    }
+                    @media screen {
+                        .hidden {
+                            display: none;
+                            visibility: visible
+                        }
+                        div.slide.hidden {
+                            display: block;
+                            visibility: visible
+                        }
+                        div.handout.hidden {
+                            display: block;
+                            visibility: visible
+                        }
+                        div.background {
+                            display: none;
+                            visibility: hidden
+                        }
+                        body.single_slide div.initial_prompt {
+                            display: block;
+                            visibility: visible
+                        }
+                        body.single_slide div.background {
+                            display: block;
+                            visibility: visible
+                        }
+                        body.single_slide div.background.hidden {
+                            display: none;
+                            visibility: hidden
+                        }
+                        body.single_slide .invisible {
+                            visibility: hidden
+                        }
+                        body.single_slide .hidden {
+                            display: none;
+                            visibility: hidden
+                        }
+                        body.single_slide div.slide {
+                            position: absolute
+                        }
+                        body.single_slide div.handout {
+                            display: none;
+                            visibility: hidden
+                        }
+                    }
+                    @media print {
+                        .hidden {
+                            display: block;
+                            visibility: visible
+                        }
+                        div.slide pre {
+                            font-size: 60%;
+                            padding-left: 0.5em;
+                        }
+                        div.toolbar {
+                            display: none;
+                            visibility: hidden;
+                        }
+                        div.slidy_toc {
+                            display: none;
+                            visibility: hidden;
+                        }
+                        div.background {
+                            display: none;
+                            visibility: hidden;
+                        }
+                        div.slide {
+                            page-break-before: always
+                        }
+                        /* :first-child isn't reliable for print media */
+                        div.slide.first-slide {
+                            page-break-before: avoid
+                        }
+                    }
+                    </style>
+      </head>
+  <body>
+        <!-- FuReSH header -->
+    <header>
+        <!-- <img class="c_left c_logo" src="https://furesh.github.io/slides/assets/images/logo_furesh-yellow.png"> -->
+        <img class="c_right c_logo" src="https://furesh.github.io/slides/assets/images/hu_siegel_rgb.png">
+    </header>
+    <div class="reveal">
+        <div class="slides">
+  
+            <section id="demo" class="blackbox">
+                <h3>Demo</h3>
+                <div id="bb_div_input" class="input">
+                <!-- ### Input -->
+                <textarea class="form-control to_clear" type="text" placeholder="Geben Sie einen Text ein" id="bb_input"></textarea>
+                <button type="button" id="bb_button_create_input">
+                Generiere Input
+                </button>
+                </div>
+                <div id="bb_div_output" class="hidden output">
+                <!-- ### Output -->
+                <p><span id="bb_result_compute" class="to_clear"></span>
+                <!-- <p id="bb_input_preprocessed" hidden class="to_clear"></p> --></p>
+                </div>
+                <div id="bb_div_blackbox" class="computing">
+                <!-- ### Blackbox -->
+                <button class="button-49" type="button" id="bb_button_compute">
+                ???
+                </button>
+                <button type="button" class="button-49 hidden" id="bb_button_input">
+                Zeige den Inhalt
+                </button>
+                <button type="button" class="button-49 hidden" id="bb_button_clear">
+                Leeren
+                </button>
+                </div>
+                <div id="bb_div_content" class="hidden content">
+                <p><span id="bb_input_preprocessed" class="to_clear"></span></p>
+                </div>
+                </section>
+        <!-- the script powering the blackbox -->
+        <script src="main.js"></script>
+        </div>
+    </div>
+    
+    <script src="https://unpkg.com/reveal.js@^4//dist/reveal.js"></script>
+
+    <!-- reveal.js plugins -->
+    <script src="https://unpkg.com/reveal.js@^4//plugin/notes/notes.js"></script>
+    <script src="https://unpkg.com/reveal.js@^4//plugin/search/search.js"></script>
+    <script src="https://unpkg.com/reveal.js@^4//plugin/zoom/zoom.js"></script>
+    
+    <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: true,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'bottom-right',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: false,
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: false,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: true,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'default',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: true,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'slide',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'fade',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+                                              
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+                width: 1000,
+                        height: 800,
+                                        
+        // reveal.js plugins
+        plugins: [
+                RevealNotes,
+        RevealSearch,
+        RevealZoom
+        ]
+      });
+    </script>
+        <footer>
+        <div class="c_frame">
+                    <span class="c_left">2022-09-20</span>
+                        <span class="c_left">|</span>
+                                        <span class="c_left">Till
+Grallert, Sophie Eckenstaler</span>
+                <!-- this should probably moved to the title slide only -->
+        <span id="institution" class="c_right">UNIVERSITÄTSBIBLIOTHEK DER HUMBOLDT-UNIVERSITÄT ZU BERLIN</span>
+        </div>
+    </footer>
+  </body>
+  </html>
