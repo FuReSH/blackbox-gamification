@@ -1,8 +1,6 @@
-//const fs = require("fs");
-
 // functions to remove characters from a string
 function replaceNonAscii(input, replace) {
-    var output = input.replace(/[^\x00-\x7F]/g, replace);
+    var output = input.replace(/[^\x21-\x7F]/g, replace);
     console.log("Replaced all non-ASCII characters in '" + input + "' with '" + replace +"'")
     return output
 }
@@ -29,7 +27,7 @@ function preprocess(input) {
     // remove all white space
     // output = removeWhitespace(output);
     // remove everything but letters and digits
-    output = retainLetters(output);
+    //output = retainLetters(output);
     return output
 }
 // the blackbox function: calling other function
@@ -62,60 +60,20 @@ function clear() {
 
 // generate input function
 async function generateInputAsync() {
-        try {
-            const response = await fetch('./data/01_novellen_txt/20.txt');
-            const data = await response.text();
-            document.getElementById("bb_input").value = data;
-            console.log(data);
-          } catch (error) {
-            console.log(error);
-          }
+    let textData = getRandomText();
+    try {
+        const response = await fetch(textData);
+        const data = await response.text();
+        document.getElementById("bb_input").value = data;
+    } catch (error) {
+        console.log(error);
+    }
 }
-    
-    
-    
-    /*var request = new XMLHttpRequest();
-    request.open('GET', './data/01_novellen_txt/20.txt', true);  // `false` => synchronous request
-    request.send(null);
 
-    if (request.status === 200) {
-        document.getElementById("bb_input").innerText = request.responseText;
-    } else {
-        document.getElementById("bb_input").innerText = request.status;
-    }*/
+function getRandomText() {
+    //let textGenre
+    let firstSentence = Math.floor(Math.random() * 139) + 1;
+    return './data/01_novellen_txt/' + firstSentence + '.txt';
+}
 
-// attaching the blackbox to a specific button
-// generate input button
-document.getElementById("bb_button_create_input").addEventListener("click", generateInputAsync)
-// compute button
-document.getElementById("bb_button_compute").addEventListener("click", function(){
-    // execute blackbox
-    blackbox();
-    // show the next button
-    this.classList.toggle('hidden');
-    document.getElementById('bb_button_input').classList.toggle('hidden');
-    // show ouput and hide input
-    document.getElementById('bb_div_output').classList.toggle('hidden');
-    document.getElementById('bb_div_input').classList.toggle('hidden');
-});
-// button to show the preprocessed input
-document.getElementById("bb_button_input").addEventListener("click", function(){
-    // show the next button
-    this.classList.toggle('hidden');
-    document.getElementById('bb_button_clear').classList.toggle('hidden');
-    // show the preprocessed input
-    document.getElementById('bb_div_content').classList.toggle('hidden');
-});
-// clear button
-document.getElementById("bb_button_clear").addEventListener("click", function() {
-    clear()
-    // show the next button
-    this.classList.toggle('hidden');
-    document.getElementById('bb_button_compute').classList.toggle('hidden');
-    // hide output and content
-    document.getElementById('bb_div_content').classList.toggle('hidden');
-    document.getElementById('bb_div_output').classList.toggle('hidden');
-    // show input
-    document.getElementById('bb_div_input').classList.toggle('hidden');
-});
-
+export { generateInputAsync, blackbox, clear }

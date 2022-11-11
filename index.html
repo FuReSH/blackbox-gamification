@@ -1201,8 +1201,8 @@
     <div class="reveal">
         <div class="slides">
   
-            <section id="demo" class="blackbox">
-                <h3>Demo</h3>
+            <section id="bb_ascii" class="blackbox">
+                <h3>Count ...</h3>
                 <div id="bb_div_input" class="input">
                 <!-- ### Input -->
                 <textarea class="form-control to_clear" type="text" placeholder="Geben Sie einen Text ein" id="bb_input"></textarea>
@@ -1221,7 +1221,7 @@
                 ???
                 </button>
                 <button type="button" class="button-49 hidden" id="bb_button_input">
-                Zeige den Inhalt
+                Öffne Blackbox
                 </button>
                 <button type="button" class="button-49 hidden" id="bb_button_clear">
                 Leeren
@@ -1231,8 +1231,39 @@
                 <p><span id="bb_input_preprocessed" class="to_clear"></span></p>
                 </div>
                 </section>
-        <!-- the script powering the blackbox -->
-        <script src="./src/blackbox_count-ascii.js"></script>
+
+                <section id="bb_sort" class="blackbox">
+                    <h3>Sort ...</h3>
+                    <div id="bb_div_input" class="input">
+                    <!-- ### Input -->
+                    <textarea class="form-control to_clear" type="text" placeholder="Geben Sie einen Text ein" id="bb_input"></textarea>
+                    <button type="button" id="bb_button_create_input">
+                    Generiere Input
+                    </button>
+                    </div>
+                    <div id="bb_div_output" class="hidden output">
+                    <!-- ### Output -->
+                    <p><span id="bb_result_compute" class="to_clear"></span>
+                    <!-- <p id="bb_input_preprocessed" hidden class="to_clear"></p> --></p>
+                    </div>
+                    <div id="bb_div_blackbox" class="computing">
+                    <!-- ### Blackbox -->
+                    <button class="button-49" type="button" id="bb_button_compute">
+                    ???
+                    </button>
+                    <button type="button" class="button-49 hidden" id="bb_button_input">
+                    Öffne Blackbox
+                    </button>
+                    <button type="button" class="button-49 hidden" id="bb_button_clear">
+                    Leeren
+                    </button>
+                    </div>
+                    <div id="bb_div_content" class="hidden content">
+                    <p><span id="bb_input_preprocessed" class="to_clear"></span></p>
+                    </div>
+                    </section>
+        <!-- the script powering the blackboxes -->
+        <script type="module" src="./src/main.js"></script>
         </div>
     </div>
     
