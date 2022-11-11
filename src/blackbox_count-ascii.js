@@ -58,24 +58,35 @@ function clear() {
             element.innerText = '';
         }
     }
-};
+}
 
 // generate input function
-function generateInput() {  
-var request = new XMLHttpRequest();
-    request.open('GET', './data/01_novellen_txt/20.txt', false);  // `false` => synchronous request
+async function generateInputAsync() {
+        try {
+            const response = await fetch('./data/01_novellen_txt/20.txt');
+            const data = await response.text();
+            document.getElementById("bb_input").value = data;
+            console.log(data);
+          } catch (error) {
+            console.log(error);
+          }
+}
+    
+    
+    
+    /*var request = new XMLHttpRequest();
+    request.open('GET', './data/01_novellen_txt/20.txt', true);  // `false` => synchronous request
     request.send(null);
 
     if (request.status === 200) {
         document.getElementById("bb_input").innerText = request.responseText;
     } else {
         document.getElementById("bb_input").innerText = request.status;
-    }
-}
+    }*/
 
 // attaching the blackbox to a specific button
 // generate input button
-document.getElementById("bb_button_create_input").addEventListener("click", generateInput)
+document.getElementById("bb_button_create_input").addEventListener("click", generateInputAsync)
 // compute button
 document.getElementById("bb_button_compute").addEventListener("click", function(){
     // execute blackbox
