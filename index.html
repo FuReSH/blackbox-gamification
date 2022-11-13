@@ -592,17 +592,19 @@
                         min-height: 5em;
                         padding-left: 1em;
                         padding-right: 1em;
+                        font-size: smaller;
                     }
                     .blackbox > .input,
                     .blackbox > .output {
-                        width: 25%;
                         background-color: rgba(245, 245, 245, 1);
                     }
                     .blackbox > .input {
                         float: left;
+                        width: auto;
                     }
                     .blackbox > .output {
                         float: right;
+                        width: 25%;
                     }
                     .blackbox textarea {
                         min-height: inherit;
@@ -631,7 +633,7 @@
                     }
                     .blackbox button {
                         min-width: 150px;
-                        height: 50px;
+                        /*height: 50px;*/
                         margin-left: auto;
                         margin-right: auto;
                         top: 1em;
@@ -748,6 +750,30 @@
                         clip-path: var(--slice-1);
                         transform: translate(0);
                       }
+                    }
+
+                    /* Center the loader */
+                    .loader {
+                        border: 12px solid #7d94b3;
+                        border-radius: 50%;
+                        border-top: 12px solid #1a3f6d;
+                        width: 50px;
+                        height: 50px;
+                        -webkit-animation: spin 2s linear infinite; /* Safari */
+                        animation: spin 2s linear infinite;
+                        margin: auto auto;
+                        margin-top: 10px;
+                    }
+
+                    /* Safari */
+                    @-webkit-keyframes spin {
+                        0% { -webkit-transform: rotate(0deg); }
+                        100% { -webkit-transform: rotate(360deg); }
+                    }
+
+                    @keyframes spin {
+                        0% { transform: rotate(0deg); }
+                        100% { transform: rotate(360deg); }
                     }
 
                     /*****************
@@ -1200,9 +1226,9 @@
     </header>
     <div class="reveal">
         <div class="slides">
-  
+            <h2>Lasst uns die Blackbox öffnen!</h2>
             <section id="bb_ascii" class="blackbox">
-                <h3>Count ...</h3>
+                <h3>Part I</h3>
                 <div id="bb_div_input" class="input">
                 <!-- ### Input -->
                 <textarea class="form-control to_clear" type="text" placeholder="Geben Sie einen Text ein" id="bb_input"></textarea>
@@ -1232,8 +1258,8 @@
                 </div>
                 </section>
 
-                <section id="bb_sort" class="blackbox">
-                    <h3>Sort ...</h3>
+                <section id="bb_stopwords" class="blackbox">
+                    <h3>Part II</h3>
                     <div id="bb_div_input" class="input">
                     <!-- ### Input -->
                     <textarea class="form-control to_clear" type="text" placeholder="Geben Sie einen Text ein" id="bb_input"></textarea>
@@ -1260,8 +1286,40 @@
                     </div>
                     <div id="bb_div_content" class="hidden content">
                     <p><span id="bb_input_preprocessed" class="to_clear"></span></p>
-                    </div>
+                    </div> 
                     </section>
+
+                    <section id="bb_slowsort" class="blackbox">
+                        <h3>Part III</h3>
+                        <div id="bb_div_input" class="input">
+                        <!-- ### Input -->
+                        <textarea class="form-control to_clear" type="text" placeholder="Geben Sie eine Liste mit Zahlen ein" id="bb_input"></textarea>
+                        <button type="button" id="bb_button_create_input">
+                        Generiere Input
+                        </button>
+                        </div>
+                        <div id="bb_div_output" class="hidden output">
+                        <!-- ### Output -->
+                        <p><span id="bb_result_compute" class="to_clear"></span>
+                        <!-- <p id="bb_input_preprocessed" hidden class="to_clear"></p> --></p>
+                        <!--<div class="loader"></div>-->
+                        </div>
+                        <div id="bb_div_blackbox" class="computing">
+                        <!-- ### Blackbox -->
+                        <button class="button-49" type="button" id="bb_button_compute">
+                        ???
+                        </button>
+                        <button type="button" class="button-49 hidden" id="bb_button_input">
+                        Öffne Blackbox
+                        </button>
+                        <button type="button" class="button-49 hidden" id="bb_button_clear">
+                        Leeren
+                        </button>
+                        </div>
+                        <div id="bb_div_content" class="hidden content">
+                        <p><span id="bb_input_preprocessed" class="to_clear"></span></p>
+                        </div>
+                        </section>
         <!-- the script powering the blackboxes -->
         <script type="module" src="./src/main.js"></script>
         </div>
@@ -1433,15 +1491,23 @@
         ]
       });
     </script>
-        <footer>
+        <!--<footer>
         <div class="c_frame">
-                    <span class="c_left">2022-09-20</span>
+                    <span class="c_left">
+                        <script>
+                            let today = new Date();
+                            let dd = String(today.getDate()).padStart(2, '0');
+                            let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+                            let yyyy = today.getFullYear();
+
+                            today = dd + '.' + mm + '.' + yyyy;
+                            document.write(today);
+                        </script>
+                    </span>
                         <span class="c_left">|</span>
-                                        <span class="c_left">Till
-Grallert, Sophie Eckenstaler</span>
-                <!-- this should probably moved to the title slide only -->
+                                        <span class="c_left">Sophie Eckenstaler, Till Grallert, Samantha Tirtohusodo</span>
         <span id="institution" class="c_right">UNIVERSITÄTSBIBLIOTHEK DER HUMBOLDT-UNIVERSITÄT ZU BERLIN</span>
         </div>
-    </footer>
+    </footer> -->
   </body>
   </html>
