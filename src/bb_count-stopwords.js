@@ -2,7 +2,7 @@
 function removeStopwords(input, stopwords) {
     let tokensWithoutStopwords = [];
     let tokens = [];
-    let str = input.replace(/[\t\n\r\.\?\!\,\:\;]/gm, " ").split(" ");
+    let str = input.replace(/[\t\n\r\.\?\!\,\:\;\—]/gm, " ").split(" ");
     str.map((s) => {
         let trimStr = s.trim();
         if (trimStr.length > 0){

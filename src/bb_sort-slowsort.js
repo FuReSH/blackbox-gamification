@@ -1,4 +1,4 @@
-// Function that implements Slow Sort (one of the slowest sort algorithms on earth ;-) )
+// Function that implements Slow Sort (one of the slowest sort algorithms on earth ;-) https://en.wikipedia.org/wiki/Slowsort)
 function slowSort(A,i,j) {
     // Base Case
     if (i >= j)
@@ -34,7 +34,7 @@ function printArray(arr, size){
 
 function blackboxSlowsort() {
     // get the input string from the HTML
-    let input = (document.getElementById("bb_slowsort").children[1].firstElementChild.value).split(",");
+    let input = (document.getElementById("bb_slowsort").children[1].firstElementChild.value).split(" ");
     let preprocessedInput = []; 
     input.map((str) => {
         preprocessedInput.push(parseInt(str));
@@ -46,7 +46,7 @@ function blackboxSlowsort() {
     // Display the sorted array
     let output = printArray(preprocessedInput, preprocessedInput.length);
     document.getElementById("bb_slowsort").children[2].firstElementChild.firstElementChild.innerText = output;
-    document.getElementById("bb_slowsort").children[4].firstElementChild.firstElementChild.innerText = "// Slow sort algorithm\n\ntime in sec: " + (duration / 1000);
+    document.getElementById("bb_slowsort").children[4].firstElementChild.firstElementChild.innerText = "// The 'Slowsort'-Algorithm\n\nnum of sorted elements: " + preprocessedInput.length + "\ntime in sec: " + (duration / 1000);
     
 }
 

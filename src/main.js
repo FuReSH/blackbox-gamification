@@ -8,8 +8,8 @@ document.querySelectorAll("#bb_ascii, #bb_stopwords, #bb_slowsort").forEach(el =
     // generate input button
     el.children[1].children[1].addEventListener("click", function(){
         if (el.id == "bb_slowsort") {
-            let randomNums = Helper.generateRandomNumInput(0,200);
-            this.previousElementSibling.value = randomNums;
+            let randomNums = Helper.generateRandomNumInput(0,250);
+            this.previousElementSibling.value = randomNums.join(" ");
         } else {
             let currentEl = this;
             let text = Helper.generateInputAsync();
@@ -51,7 +51,7 @@ document.querySelectorAll("#bb_ascii, #bb_stopwords, #bb_slowsort").forEach(el =
     });
     // clear button
     el.children[3].children[2].addEventListener("click", function() {
-        Helper.clear();
+        Helper.clear(el);
         // show the next button
         this.classList.toggle('hidden');
         el.children[3].children[0].classList.toggle('hidden');

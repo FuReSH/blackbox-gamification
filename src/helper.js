@@ -1,12 +1,12 @@
 // helper function: clear all textboxes
-function clear() {
-    let text = document.getElementsByClassName('to_clear');
+function clear(section) {
+    let text = section.getElementsByClassName("to_clear");
     for (let index = 0; index < text.length; index++) {
         const element = text[index];
-        if (document.getElementsByTagName("textarea")) {
+        if (section.getElementsByTagName("textarea")) {
             element.value = '';
         }
-        if (document.getElementsByTagName("textarea")) {
+        if (section.getElementsByTagName("textarea")) {
             element.innerText = '';
         }
     }
