@@ -1,4 +1,4 @@
-// Function that implements Slow Sort (one of the slowest sort algorithms on earth ;-) https://en.wikipedia.org/wiki/Slowsort)
+// Function that implements Slow Sort (one of the slowest sort algorithms on earth ;-) https://arpitbhayani.me/blogs/slowsort)
 function slowSort(A,i,j) {
     // Base Case
     if (i >= j)
