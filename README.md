@@ -1,6 +1,6 @@
 # blackbox-gamification
 
-This is a simple HTML/Javascript application that uses three examples to convey an understanding of so-called *tool literacy* in the humanities and cultural sciences.
+This is a simple HTML/Javascript application that uses three gamified examples to gamified convey an understanding of so-called *tool literacy* in the humanities and cultural sciences.
 
 The examples follow the concept of digital tools as black boxes that are opened in order to understand the instrumental and methodological functionality.
 
